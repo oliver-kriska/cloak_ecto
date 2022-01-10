@@ -35,7 +35,7 @@ defmodule Cloak.Ecto.MixProject do
 
   defp deps do
     [
-      {:cloak, "~> 1.1.1"},
+      {:cloak, github: "oliver-kriska/cloak"},
       {:ecto, "~> 3.0"},
       # Must use a forked version of pbkdf2 to support Erlang 24. Because Hex only
       # allows hex packages to be dependencies, this dep cannot be listed as an
