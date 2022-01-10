@@ -8,7 +8,7 @@ defmodule Cloak.Ecto.Type do
     label = opts[:label]
 
     quote location: :keep do
-      @behaviour Ecto.Type
+      use Ecto.Type
       @behaviour Cloak.Ecto.Type
 
       @doc false
@@ -32,13 +32,9 @@ defmodule Cloak.Ecto.Type do
       end
 
       def dump(value) do
-        with {:ok, value} <- cast(value),
-             value <- before_encrypt(value),
-             {:ok, value} <- encrypt(value) do
-          {:ok, value}
-        else
-          _other ->
-            :error
+        case cast(value) do
+          {:ok, value} -> maybe_encrypt_value(value)
+          _otherwise -> :error
         end
       end
 
@@ -88,6 +84,30 @@ defmodule Cloak.Ecto.Type do
       @doc false
       def __cloak__ do
         [vault: unquote(vault), label: unquote(label)]
+      end
+
+      defp maybe_encrypt_value(value) do
+        if vault_started?(),
+          do: encrypt_value(value),
+          else: {:ok, value}
+      end
+
+      defp vault_started? do
+        not_nil? = &(not is_nil(&1))
+
+        unquote(vault)
+        |> Process.whereis()
+        |> not_nil?.()
+      end
+
+      defp encrypt_value(value) do
+        with value <- before_encrypt(value),
+             {:ok, value} <- encrypt(value) do
+          {:ok, value}
+        else
+          _other ->
+            :error
+        end
       end
 
       defp encrypt(plaintext) do
