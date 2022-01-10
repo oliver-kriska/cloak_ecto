@@ -23,7 +23,7 @@ defmodule Cloak.Ecto.MapTest do
   end
 
   test ".before_encrypt converts the map to a JSON string" do
-    assert "{\"key\":\"value\"}" = Field.before_encrypt(@map)
+    assert ~S({"key":"value"}) = Field.before_encrypt(@map)
   end
 
   test ".dump encrypts the map" do

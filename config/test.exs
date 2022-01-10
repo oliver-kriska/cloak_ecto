@@ -14,3 +14,15 @@ config :cloak_ecto, Cloak.Ecto.TestVault,
 config :logger, level: :warn
 
 config :cloak_ecto, ecto_repos: [Cloak.Ecto.TestRepo]
+
+config :junit_formatter,
+  report_dir: "/tmp/test-results",
+  automatic_create_dir?: true,
+  # Save output to "/tmp/junit.xml"
+  report_file: "junit.xml",
+  # Adds information about file location when suite finishes
+  print_report_file: true,
+  # Include filename and file number
+  include_filename?: true,
+  include_file_line?: true,
+  prepend_project_name?: true

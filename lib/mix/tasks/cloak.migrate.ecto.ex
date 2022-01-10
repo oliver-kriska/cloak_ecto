@@ -108,11 +108,12 @@ defmodule Mix.Tasks.Cloak.Migrate.Ecto do
   import IO.ANSI, only: [yellow: 0, green: 0, reset: 0]
 
   alias Cloak.Ecto.Migrator
+  alias Mix.Cloak.Ecto
 
   @doc false
   def run(args) do
     Mix.Task.run("app.start", [])
-    configs = Mix.Cloak.Ecto.parse_config(args)
+    configs = Ecto.parse_config(args)
 
     for {_app, config} <- configs,
         schema <- config.schemas do

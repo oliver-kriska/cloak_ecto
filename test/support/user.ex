@@ -1,4 +1,6 @@
 defmodule Cloak.Ecto.TestUser do
+  @moduledoc false
+
   use Ecto.Schema
 
   schema "users" do

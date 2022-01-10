@@ -1,4 +1,6 @@
 defmodule Cloak.Ecto.TestComment do
+  @moduledoc false
+
   use Ecto.Schema
 
   embedded_schema do

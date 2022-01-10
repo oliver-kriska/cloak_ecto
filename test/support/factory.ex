@@ -1,15 +1,18 @@
 defmodule Cloak.Ecto.Factory do
   @moduledoc false
 
+  alias Cloak.Ecto.Hashed.HMAC
+  alias Cloak.Ecto.{TestRepo, TestVault}
+
   @doc """
   Creates a user.
   """
   def create_user(email) do
-    email = Cloak.Ecto.TestVault.encrypt!(email, :secondary)
-    {:ok, email_hash} = Cloak.Ecto.Hashed.HMAC.dump(email)
+    email = TestVault.encrypt!(email, :secondary)
+    {:ok, email_hash} = HMAC.dump(email)
 
     {_count, [user]} =
-      Cloak.Ecto.TestRepo.insert_all(
+      TestRepo.insert_all(
         "users",
         [
           %{

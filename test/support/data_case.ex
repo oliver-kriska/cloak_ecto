@@ -14,10 +14,12 @@ defmodule Cloak.Ecto.DataCase do
 
   use ExUnit.CaseTemplate
 
+  alias Ecto.Adapters.SQL.Sandbox
+
   using do
     quote do
-      alias Cloak.Ecto.TestRepo, as: Repo
       alias Cloak.Ecto.Factory
+      alias Cloak.Ecto.TestRepo, as: Repo
 
       import Ecto
       import Ecto.Changeset
@@ -27,10 +29,10 @@ defmodule Cloak.Ecto.DataCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Cloak.Ecto.TestRepo)
+    :ok = Sandbox.checkout(Cloak.Ecto.TestRepo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Cloak.Ecto.TestRepo, {:shared, self()})
+      Sandbox.mode(Cloak.Ecto.TestRepo, {:shared, self()})
     end
 
     :ok

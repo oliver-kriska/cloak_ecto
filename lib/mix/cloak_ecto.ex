@@ -51,7 +51,7 @@ defmodule Mix.Cloak.Ecto do
   defp validate_config!(config) do
     invalid_configs = Enum.filter(config, &(!valid?(&1)))
 
-    unless length(invalid_configs) == 0 do
+    unless Enum.empty?(invalid_configs) do
       apps = Keyword.keys(invalid_configs)
 
       raise Mix.Error, """

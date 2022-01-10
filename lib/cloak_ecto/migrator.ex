@@ -3,8 +3,8 @@ defmodule Cloak.Ecto.Migrator do
 
   import Ecto.Query
 
-  alias Ecto.Changeset
   alias Cloak.Ecto.Migrator.CursorStream
+  alias Ecto.Changeset
 
   def migrate(repo, schema) when is_atom(repo) and is_atom(schema) do
     validate(repo, schema)

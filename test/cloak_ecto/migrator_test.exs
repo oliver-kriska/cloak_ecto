@@ -75,7 +75,7 @@ defmodule Cloak.Ecto.MigratorTest do
   describe ".migrate/2 with binary ids" do
     setup do
       now = DateTime.utc_now()
-      encrypted_title = Cloak.Ecto.TestVault.encrypt!(@post_title, :secondary)
+      encrypted_title = Vault.encrypt!(@post_title, :secondary)
 
       posts =
         for _ <- 1..500 do

@@ -20,7 +20,11 @@ defmodule Cloak.Ecto.MixProject do
       deps: deps(),
       docs: docs(),
       elixirc_paths: elixirc_paths(Mix.env()),
-      aliases: aliases()
+      aliases: aliases(),
+      dialyzer: [
+        plt_file: {:no_warn, "priv/plts/dialyzer.plt"},
+        plt_add_apps: [:mix]
+      ]
     ]
   end
 
@@ -48,7 +52,10 @@ defmodule Cloak.Ecto.MixProject do
       {:ecto_sql, ">= 0.0.0", only: [:dev, :test]},
       {:postgrex, ">= 0.0.0", only: [:dev, :test]},
       {:jason, ">= 0.0.0", only: [:dev, :test]},
-      {:inch_ex, ">= 0.0.0", only: :test}
+      {:inch_ex, ">= 0.0.0", only: :test},
+      {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:junit_formatter, "~> 3.3", only: [:test]}
     ]
   end
 

@@ -57,10 +57,11 @@ defmodule Cloak.Ecto.Type do
       end
 
       def load(value) do
-        with {:ok, value} <- decrypt(value) do
-          value = after_decrypt(value)
-          {:ok, value}
-        else
+        case decrypt(value) do
+          {:ok, value} ->
+            value = after_decrypt(value)
+            {:ok, value}
+
           _other ->
             :error
         end

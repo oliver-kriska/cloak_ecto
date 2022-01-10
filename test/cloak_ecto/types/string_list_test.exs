@@ -24,11 +24,11 @@ defmodule Cloak.Ecto.StringListTest do
   end
 
   test ".before_encrypt converts the list to a JSON string" do
-    assert "[\"A\",\"list\",\"of\",\"strings\"]" = Field.before_encrypt(@list)
+    assert ~S(["A","list","of","strings"]) = Field.before_encrypt(@list)
   end
 
   test ".before_encrypt handles list elements that are atoms" do
-    assert "[\"A\",\"mixed\",\"list\"]" = Field.before_encrypt(["A", :mixed, "list"])
+    assert ~S(["A","mixed","list"]) = Field.before_encrypt(["A", :mixed, "list"])
   end
 
   test ".dump encrypts the list" do

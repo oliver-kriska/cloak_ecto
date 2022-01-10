@@ -1,4 +1,6 @@
 defmodule Cloak.Ecto.TestRepo do
+  @moduledoc false
+
   use Ecto.Repo,
     otp_app: :cloak_ecto,
     adapter: Ecto.Adapters.Postgres

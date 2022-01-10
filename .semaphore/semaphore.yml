@@ -25,21 +25,45 @@ blocks:
           value: postgresql://postgres@localhost/test?encoding=utf8
       secrets:
         - name: cloak-ecto-coveralls
+      prologue:
+        commands:
+          - sem-version erlang $ERLANG_VERSION
+          - sem-version elixir $ELIXIR_VERSION
+          - checkout
+          - cache restore
+          - mix local.hex --force
+          - mix local.rebar --force
+          - mix deps.get
+      epilogue:
+        commands:
+          - cache store
       jobs:
+        - name: "Credo"
+          env_vars:
+            - name: ERLANG_VERSION
+              value: "24.2"
+            - name: ELIXIR_VERSION
+              value: "1.13.1"
+          commands:
+            - mix credo
         - name: "Build"
           matrix:
             - env_var: ELIXIR_VERSION
-              values: ["1.11.3", "1.12.1"]
+              values: ["1.11.4", "1.12.3", "1.13.1"]
             - env_var: ERLANG_VERSION
-              values: ["23.3", "24.0"]
+              values: ["23.3", "24.2"]
           commands:
-            - sem-version erlang $ERLANG_VERSION
-            - sem-version elixir $ELIXIR_VERSION
-            - sem-service start postgres
-            - checkout
-            - cache restore
-            - mix local.hex --force
-            - mix local.rebar --force
-            - mix deps.get
+            - sem-service start postgres 13
             - bin/test
-            - cache store
+        - name: "Dialyzer"
+          matrix:
+            - env_var: ELIXIR_VERSION
+              values: ["1.11.4", "1.12.3", "1.13.1"]
+            - env_var: ERLANG_VERSION
+              values: ["23.3", "24.2"]
+          commands:
+          - cache restore dialyzer-plt-$ERLANG_VERSION-
+          - cache restore dialyzer-plt-$ERLANG_VERSION-$SEMAPHORE_GIT_PR_BRANCH
+          - mix dialyzer --ignore-exit-status
+          - cache store dialyzer-plt-$ERLANG_VERSION-$SEMAPHORE_GIT_PR_BRANCH$SEMAPHORE_WORKFLOW_NUMBER priv/plts
+          - mix dialyzer --no-check --no-compile
