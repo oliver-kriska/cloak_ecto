@@ -58,12 +58,12 @@ blocks:
         - name: "Dialyzer"
           matrix:
             - env_var: ELIXIR_VERSION
-              values: ["1.11.4", "1.12.3", "1.13.1"]
+              values: ["1.13.1"]
             - env_var: ERLANG_VERSION
-              values: ["23.3", "24.2"]
+              values: ["24.2"]
           commands:
-          - cache restore dialyzer-plt-$ERLANG_VERSION-
-          - cache restore dialyzer-plt-$ERLANG_VERSION-$SEMAPHORE_GIT_PR_BRANCH
+          - cache restore dialyzer-plt-$ELIXIR_VERSION-$ERLANG_VERSION-
+          - cache restore dialyzer-plt-$ELIXIR_VERSION-$ERLANG_VERSION-$SEMAPHORE_GIT_PR_BRANCH
           - mix dialyzer --ignore-exit-status
-          - cache store dialyzer-plt-$ERLANG_VERSION-$SEMAPHORE_GIT_PR_BRANCH$SEMAPHORE_WORKFLOW_NUMBER priv/plts
+          - cache store dialyzer-plt-$ELIXIR_VERSION-$ERLANG_VERSION-$SEMAPHORE_GIT_PR_BRANCH$SEMAPHORE_WORKFLOW_NUMBER priv/plts
           - mix dialyzer --no-check --no-compile
