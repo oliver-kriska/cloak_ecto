@@ -4,7 +4,7 @@
 #
 # This script contains all the test commands for this app, which will be run
 # on the continuous integration server.
-if [ "$ELIXIR_VERSION" != "1.13.1" ]; then
+if [ "$ELIXIR_VERSION" == "1.13.1" ]; then
   MIX_ENV=test mix format --check-formatted || {
     echo 'Code was not formatted!'
     exit 1
